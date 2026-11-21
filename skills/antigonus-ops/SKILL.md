@@ -40,7 +40,7 @@ Fetch the Progress Tracker data source schema before writing, and use its exact 
 
 1. Resolve the repository, Project, and optional Issue as above.
 2. Fetch the live OPS documents and any Knowledge Base source the task names.
-3. Read the Issue's current state and the recent Progress entries related to the Project and Issue, sorted by `Recorded At` descending. Follow pagination back to the previous handoff or unresolved blocker. Read event bodies, not just titles.
+3. Read the Issue's current state and the recent Progress entries related to the Project and Issue, sorted by `Recorded At` descending. Follow pagination back to the previous handoff or unresolved blocker. Read the bodies, not only the titles.
 4. Inspect the Git root, branch, base and HEAD SHAs, staged and unstaged files, and relevant PR, CI, or runtime evidence.
 5. Compare the records with what you observed. Name contradictions and missing evidence before claiming anything. Continue only inside the allocated scope and authorization.
 
