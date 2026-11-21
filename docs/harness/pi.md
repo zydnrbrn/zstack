@@ -18,7 +18,8 @@ pi install /absolute/path/to/zstack
 | `/zstack` | Load the zstack mode skill and start a task. |
 | `/zstack-help` | Load the help skill. |
 | `/setup-zstack` | Set per-role model overrides in `~/.pi/agent/zstack.json`. |
-| `/zstack-status` | Print install paths, agents, and overrides. Work in print mode uses `/skill:<name>` directly. |
+| `/antigonus-register` | Map this repository to its Notion Project and optional Issue. |
+| `/zstack-status` | Print install paths, agents, overrides, and the Notion mapping. Work in print mode uses `/skill:<name>` directly. |
 
 `zstack_task` accepts the vocabulary zstack already uses. `subagent_type` picks `zstack-agent`, `comment-sicko`, `generalPurpose`, or `Explore`. `prompt` is the task; `task` is accepted as an alias. `readonly` limits the child to read tools. `worktree: true` runs the child in a detached git worktree. `file_attachments` are passed as paths, never inlined. `resume` prepends a prior report as context. `run_in_background` is accepted for playbook compatibility; issue several tool calls in one message for parallel work.
 
@@ -31,6 +32,12 @@ Bundled agent prompts live in `agents/`. `zstack-agent` reads `skills/zstack/SKI
 ## Model config
 
 `/setup-zstack` writes `~/.pi/agent/zstack.json`. It is global, not repository-local. There is no `zstack-models.md` and no per-project rule file. A role with no entry inherits the parent model. `inherit-parent` and `auto` mean the same thing.
+
+## Notion mapping
+
+`/antigonus-register <project-url> [issue-url]` writes `~/.pi/agent/antigonus.json`, keyed by repository path. A `.zstack/antigonus.json` in a repository overrides the machine entry. The longest matching path prefix wins, so a monorepo subdirectory resolves to its workspace.
+
+The mapping is only used by `antigonus-ops`, which owns the Notion reads and writes. That skill fetches the current OPS documents from Notion every session instead of trusting copied text. No mapping means no tracker writes, and the run says so.
 
 ## Other harnesses
 

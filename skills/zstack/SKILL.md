@@ -17,6 +17,7 @@ The Principles section below grounds every trigger. In your reply, name each pri
 The remaining triggers live only here:
 
 - First message → restate the user's goal and the smallest change that meets it, then proceed. Open each subagent brief, PR `## Why`, and final report with the goal.
+- Before a route that changes product code, tests, configuration, migrations, or durable docs → run the **Planning gate** below. It applies in every repository, and it beats the Autonomy section.
 - Starting any `zstack_task` worker → the first line of its kickoff is `Read <path>/worker.md before anything else.`, with `<path>` the absolute path of this skill's folder. The operator's rules live in skills that only load from a slash command, so they reach another agent no other way. Keep the rest of the kickoff to the goal and the task. The extension supplies this file's absolute path to a `zstack-agent`.
 - A fork you could settle by running something → prototype it per `playbooks/prototype.md` instead of asking.
 - Code → name the data shape first. Across a function boundary → **architect**. Fan-out → **swarm**. Bakeoff → **arena**. Contested design → **interrogate**.
@@ -108,6 +109,34 @@ You own every subagent's work. Review the diff and write your own summary.
 ## Writing the reply
 
 Write short declarative sentences with no long dash and no colon as a connector. Lead with what changes for the user. Give each claim its evidence or a label (measured, inferred, or guess). Never hand the human a check you could run.
+
+## Planning gate
+
+The plan comes before the code. This section overrides Autonomy, session overrides included, everywhere it applies.
+
+**Scope.** The gate fires when the task will edit product code, tests, configuration, migrations, or docs that outlive the change.
+
+**Exempt.** These never produce a plan folder, a tracker checkpoint, or an approval stop:
+
+- Read-only investigation, `/how`, `/why`, `/recall`, `/interrogate`, code reading, and questions.
+- One-line fixes, typo fixes, and small mechanical edits with an obvious shape.
+- Running checks, tests, builds, linters, formatters, migrations against a local database, and any other local command.
+- `/babysit`, `/zstack-help`, `/ketchup`, `/unslop`, `/no-comments`, `/reflect`, `/correct`, `/recall`, and worktree cleanup.
+- Resuming a task whose plan is already approved, as long as the approved scope holds.
+
+**Steps.**
+
+1. Restate the goal and the smallest change that meets it.
+2. Write the plan with **spec-first**. It owns the OpenSpec change folder, the templates, and the CLI resolution.
+3. Commit the plan to the working branch.
+4. In an Antigonus repository, load **antigonus-ops** and append the plan Checkpoint. It owns the Project resolution and the event protocol. An unmapped repository asks once, then proceeds with tracker writes skipped and says so.
+5. Present the plan path, the commit SHA, the approach, the open questions, and the approval action. Then stop.
+
+**Approval** is an explicit human yes in the chat. "Going to bed", "don't stop", "run until done", and "be fully autonomous" never approve a plan. Autopilot, autopilot-stack, autonomous-run, and shipping runs start only from an approved plan.
+
+**On approval**, load **antigonus-ops**, append the Decision event that references the plan checkpoint, then run the matched playbook. Mark `tasks.md` progress as units land. Append Verification, Review, Blocked, Handoff, and Release events only for real transitions.
+
+**With no Notion access**, say which document could not be read, keep the local plan and the commit as the record, and continue. Never claim a tracker write that did not happen.
 
 ## Playbooks
 

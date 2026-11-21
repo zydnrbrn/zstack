@@ -72,3 +72,5 @@ Goal: preserve stability and keep the next reader's load small.
 ## Records
 
 Notion is the business record. Git is the code record. An agent narrative is not test evidence.
+
+Read the live protocol with **antigonus-ops**, which fetches the current OPS documents every session and owns the Progress Tracker writes. Do not copy the protocol into this skill, and do not hardcode a client, a Project, or an Issue. Plan before implementation with **spec-first**, then stop for approval.

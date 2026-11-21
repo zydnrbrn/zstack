@@ -1,6 +1,8 @@
 # The zstack guide
 
-zstack works best when you stop micromanaging the agent. You describe what you want and how you'll know it's done. `/zstack` picks the playbook, runs the other skills as the steps need them, and shows you the evidence. This guide teaches that habit with realistic prompts.
+zstack works best when you stop micromanaging the agent. You describe what you want and how you'll know it's done. `/zstack` writes the plan first, stops for your approval, then picks the playbook, runs the other skills as the steps need them, and shows you the evidence. This guide teaches that habit with realistic prompts.
+
+Start here before your first real task: [Plan before you build](./plan-first.md). It covers the OpenSpec change folder, the approval stop, and the work the gate deliberately leaves alone.
 
 Here's what you'll learn:
 
