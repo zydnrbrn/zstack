@@ -35,7 +35,7 @@
 ## 7. Evidence
 
 - [x] 7.1 Run the eval playbook blind on this skill change, same task for both variants, and attach the judge report to the PR
-- [ ] 7.2 Append a Verification event for the completed gate change with the branch SHA, exact commands, observed results, and unverified gaps, then read the Progress Tracker row back and confirm it matches
+- [x] 7.2 Append a Verification event for the completed gate change with the branch SHA, exact commands, observed results, and unverified gaps, then read the Progress Tracker row back and confirm it matches
 
 ## Workflow follow-up
 
