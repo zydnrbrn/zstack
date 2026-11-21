@@ -5,6 +5,7 @@ import { Text } from "@earendil-works/pi-tui";
 import { Type } from "typebox";
 import { discoverAgents, repoRootPath, zstackSkillPath } from "./agents.ts";
 import { configPath, readConfig, resolveRoleModel, ROLES, type Role } from "./config.ts";
+import { antigonusMapPath, registerAntigonusRepo, resolveAntigonusEntry } from "./antigonus.ts";
 import { runTask, type DispatchDetails, type TaskRequest, type TaskResult } from "./dispatch.ts";
 import { runSetup } from "./setup.ts";
 
@@ -185,14 +186,34 @@ export default function (pi: ExtensionAPI) {
 		},
 	});
 
+	pi.registerCommand("antigonus-register", {
+		description: "Map this repository to its Notion Project and optional Issue",
+		handler: async (args, ctx) => {
+			const [project, issue] = args.trim().split(/\s+/).filter(Boolean);
+			if (!project) {
+				const resolved = await resolveAntigonusEntry(ctx.cwd);
+				ctx.ui.notify(
+					resolved
+						? `Notion mapping for ${ctx.cwd}: project ${resolved.entry.project ?? "(none)"}, issue ${resolved.entry.issue ?? "(none)"}, source ${resolved.source}.`
+						: `No Notion mapping for ${ctx.cwd}. Run /antigonus-register <project-url> [issue-url] from the repository root.`,
+					"info",
+				);
+				return;
+			}
+			await registerAntigonusRepo(ctx.cwd, project, issue);
+			ctx.ui.notify(`Recorded Notion mapping for ${ctx.cwd} in ${antigonusMapPath()}.`, "info");
+		},
+	});
+
 	pi.registerCommand("zstack-status", {
 		description: "Show where zstack is installed and which model roles are overridden",
 		handler: async (_args, ctx) => {
 			const config = await readConfig();
 			const overrides = Object.entries(config.roles);
 			const agents = discoverAgents().map((agent) => agent.name).join(", ");
+			const mapping = await resolveAntigonusEntry(ctx.cwd);
 			ctx.ui.notify(
-				`zstack root: ${repoRootPath()}\nskill: ${zstackSkillPath()}\nconfig: ${configPath()}\nagents: ${agents}\noverrides: ${overrides.length ? overrides.map(([role, model]) => `${role}=${model}`).join(", ") : "none (inherit-parent)"}\nskills for Codex, Grok, Claude Code: ~/.agents/skills and ~/.claude/skills`,
+				`zstack root: ${repoRootPath()}\nskill: ${zstackSkillPath()}\nconfig: ${configPath()}\nagents: ${agents}\noverrides: ${overrides.length ? overrides.map(([role, model]) => `${role}=${model}`).join(", ") : "none (inherit-parent)"}\nnotion: ${mapping ? `${mapping.entry.project ?? "(no project)"} (${mapping.source})` : "unmapped"}\nskills for Codex, Grok, Claude Code: ~/.agents/skills and ~/.claude/skills`,
 				"info",
 			);
 		},
