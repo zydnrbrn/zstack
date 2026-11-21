@@ -2,8 +2,8 @@
 
 ## 1. Planning Scaffold
 
-- [ ] 1.1 Add `openspec/config.yaml` pinning `schema: spec-driven` and verify `openspec context --json` resolves the zstack repository root
-- [ ] 1.2 Verify `openspec validate spec-first-plan-gate --strict` passes on this committed plan
+- [x] 1.1 Add `openspec/config.yaml` pinning `schema: spec-driven` and verify `openspec context --json` resolves the zstack repository root
+- [x] 1.2 Verify `openspec validate spec-first-plan-gate --strict` passes on this committed plan
 
 ## 2. Generic Planning Skill
 
