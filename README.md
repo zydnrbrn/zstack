@@ -22,7 +22,7 @@ this directory is the source. zstack is installed machine-wide, once, for every 
 pi install /absolute/path/to/zstack
 ```
 
-The Pi package contains a full extension and all skills. The extension adds `zstack_task`, `/zstack`, `/zstack-help`, `/setup-zstack`, and `/zstack-status`. It runs every worker as an isolated Pi process on the parent session model. See the [Pi adapter](./docs/harness/pi.md).
+The Pi package contains a full extension and all skills. The extension adds `zstack_task`, `/zstack`, `/zstack-help`, `/setup-zstack`, `/antigonus-register`, and `/zstack-status`. It runs every worker as an isolated Pi process on the parent session model. See the [Pi adapter](./docs/harness/pi.md).
 
 For the other three harnesses, link this checkout's `skills/` into their user skill paths:
 
@@ -52,7 +52,23 @@ that's it. the other skills are situational, and the mode skill uses them for yo
 
 ## usage
 
-use [`/zstack`](./skills/zstack/SKILL.md) at the start of a task. it reads your request, picks from a set of playbooks, and runs the other skills as the steps need them.
+use [`/zstack`](./skills/zstack/SKILL.md) at the start of a task. it writes the plan, stops for your approval, then picks from a set of playbooks and runs the other skills as the steps need them.
+
+### plan first, then approve
+
+every route that changes code plans before it edits. the plan is an [openspec](https://github.com/Fission-AI/OpenSpec) change folder committed to your branch, so you read it in the pr:
+
+```
+openspec/changes/<slug>/
+  proposal.md
+  design.md
+  tasks.md
+  specs/<capability>/spec.md
+```
+
+read-only investigation, one-line fixes, and running checks or tests need no plan and no approval. everything else stops once. nobody approves by silence, and "going to bed" is not an approval. [plan before you build](./docs/guide/plan-first.md) has the details.
+
+in an antigonus repository the same commit also appends a notion progress checkpoint, and approval appends a decision that references it. map a repository once with `/antigonus-register <project-url>`. the tracker records progress, never terminal output.
 
 ### just use [`/zstack`](./skills/zstack/SKILL.md)
 
