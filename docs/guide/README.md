@@ -4,7 +4,7 @@ zstack works best when you stop micromanaging the agent. You describe what you w
 
 Here's what you'll learn:
 
-1. [Set up zstack](./01-setup.md). Install the plugin and confirm the model defaults.
+1. [Set up zstack](./01-setup.md). Install the machine-wide package and confirm the model defaults.
 2. [Route work through `/zstack`](./02-zstack.md). Give it a goal and watch it pick a playbook.
 3. [Understand the code](./03-understand.md). A read-only investigation, then `/how`, `/why`, `/teach`, and `/recall` before you edit anything.
 4. [Design the change](./04-design.md). `/architect`, `/arena`, `/swarm`, `/interrogate`, prototypes, and plans before code locks in a shape.

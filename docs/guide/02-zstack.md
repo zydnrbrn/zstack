@@ -106,9 +106,7 @@ A long chat accumulates context from the last task. When you change subjects, sa
 
 If you run several agents against one repository on one computer, they will fight over the working tree, the ports, and the build output.
 
-not supported. Cursor is not a supported harness.
-
-Ask for a worktree up front:
+In Pi, pass `worktree: true` to `zstack_task` to give a worker its own detached worktree, or ask for one up front:
 
 ```text
 /zstack new task. branch off <base> in a fresh worktree, then port the parser change there.

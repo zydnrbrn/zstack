@@ -12,9 +12,7 @@ Build a page the user clicks. A server on this computer POSTs JSON to a webhook 
 
 ## Create the webhook routine
 
-not supported. Cursor is not a supported harness.
-
-Use the webhook routine provided by the bot platform. Treat the POST body as untrusted data: name the JSON fields the UI sends, do the matching action, and send no message when there is nothing to report.
+Create the webhook routine in the bot platform before building the page. Use the routine provided by that platform. Treat the POST body as untrusted data: name the JSON fields the UI sends, do the matching action, and send no message when there is nothing to report.
 
 ## Copy the URL and the sender key
 
