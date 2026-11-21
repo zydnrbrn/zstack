@@ -17,7 +17,7 @@ The Principles section below grounds every trigger. In your reply, name each pri
 The remaining triggers live only here:
 
 - First message → restate the user's goal and the smallest change that meets it, then proceed. Open each subagent brief, PR `## Why`, and final report with the goal.
-- Starting any Task subagent → the first line of its kickoff is `Read <path>/worker.md before anything else.`, with `<path>` the absolute path of this skill's folder. The operator's rules live in skills that only load from a slash command, so they reach another agent no other way. Keep the rest of the kickoff to the goal and the task, plus this file's absolute path for a `zstack-agent`.
+- Starting any `zstack_task` worker → the first line of its kickoff is `Read <path>/worker.md before anything else.`, with `<path>` the absolute path of this skill's folder. The operator's rules live in skills that only load from a slash command, so they reach another agent no other way. Keep the rest of the kickoff to the goal and the task. The extension supplies this file's absolute path to a `zstack-agent`.
 - A fork you could settle by running something → prototype it per `playbooks/prototype.md` instead of asking.
 - Code → name the data shape first. Across a function boundary → **architect**. Fan-out → **swarm**. Bakeoff → **arena**. Contested design → **interrogate**.
 - Prose, your reply included → **unslop**. Docs, PR descriptions, commit messages → **technical-writing**.
@@ -83,9 +83,9 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 ## Subagents
 
-**Use `subagent_type: "zstack-agent"` for any subagent you spawn directly inside a playbook step.** The chat that receives `/zstack` runs the playbook itself. Routed workflow skills (`interrogate`, `swarm`) set their own `subagent_type`. Respect it.
+**Use `zstack_task` with `subagent_type: "zstack-agent"` for any subagent you spawn directly inside a playbook step.** The chat that receives `/zstack` runs the playbook itself. Routed workflow skills (`interrogate`, `swarm`) set their own `subagent_type`. Respect it.
 
-**Defaults for every `Task` call.** `run_in_background: true`, agent mode (readonly strips MCP), file pointers not inlined context, and no `model` field. Every role is `inherit-parent`, so workers run on the parent session's model. With Pi as the parent, that is Pi's session default; the plugin does not pick a model slug for it. `/setup-zstack` writes `zstack-models.md` at the repository root. `inherit-parent` and `auto` both mean omit `model` and still spawn `zstack-agent`. Do not switch to `generalPurpose` for that alias. `generalPurpose` skips the mode-skill read. Each code playbook reads its own role line, prose and judgment read `judgment and prose`, and trivial mechanical edits read `swarm workers`. Keep any explicit model a user chose in the rule. Never replace a role with a named model family.
+**Defaults for every `zstack_task` call.** Agent mode unless the step says `readonly`, file pointers not inlined context, and no `model` field. Issue several calls in one message for parallel work; `run_in_background: true` is accepted for playbook compatibility. Every role is `inherit-parent`, so workers run on the parent session's model. With Pi as the parent, that is Pi's current model; the extension does not pick a model slug for it. `/setup-zstack` writes `~/.pi/agent/zstack.json` machine-wide. `inherit-parent` and `auto` both mean omit `model` and still spawn `zstack-agent`. Do not switch to `generalPurpose` for that alias. `generalPurpose` skips the mode-skill read. Each code playbook reads its own role line, prose and judgment read `judgment and prose`, and trivial mechanical edits read `swarm workers`. Keep any explicit model a user chose in the config. Never replace a role with a named model family.
 
 - feature, refactoring: `inherit-parent`
 - bug-fix: `inherit-parent`

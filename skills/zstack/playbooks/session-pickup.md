@@ -4,8 +4,6 @@
 
 1. Locate the prior trail. Use a local transcript under the active workspace's `agent-transcripts/` directory (the system prompt names the path. Stay inside that workspace path; globbing across unrelated transcript roots crosses workspace boundaries and reads private chats from unrelated projects) or a pushed branch.
 
-   not supported. Cursor is not a supported harness.
-
    Read the metadata overview and last messages first, then scan back for the decision points. Parse a long transcript in a subagent and keep the reduced timeline in the main thread (the **principle-guard-the-context-window** skill). Pick each subagent's reasoning level for the job, per the Subagents section.
 2. Reconstruct operational state. The branch and worktree, what already landed (`git log`, `git diff` against the base), the open todos, the decisions made. The prior trail is authoritative input. Resist the bias to re-derive it.
 3. Diff done vs pending. Compare what shipped against what was planned, name the resume point, do not re-run the prior repro or redo completed work. A "let me verify from scratch" pass means you're treating the trail as untrustworthy when it's authoritative.

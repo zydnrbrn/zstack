@@ -4,11 +4,15 @@ In this page you install the plugin, confirm the model defaults, and run your fi
 
 ## Install from this source
 
-This directory is the source. Pi runs implementation on Pi's default model. The T3 session reviews the work: Grok, Codex, Claude Code, OpenCode, or another T3 provider.
+This directory is the source. Install it once, machine-wide:
+
+```bash
+pi install /absolute/path/to/zstack
+```
+
+Pi is the primary harness and runs workers on the session model. Codex, Grok, and Claude Code read the same skills from user-scope directories. See the [Pi adapter](../harness/pi.md), [Codex adapter](../harness/codex.md), [Grok adapter](../harness/grok.md), and [Claude Code adapter](../harness/claude-code.md).
 
 This tree derives from pstack by Lauren Tan.
-
-In Claude Code inside a T3 session, commands take a `zstack:` prefix, such as `/zstack:setup-zstack`. The [Claude Code adapter](../harness/claude-code.md) covers the other differences.
 
 ## Pick your models
 
@@ -18,11 +22,11 @@ Run:
 /setup-zstack
 ```
 
-[`/setup-zstack`](../../skills/setup-zstack/SKILL.md) detects the models you could override with, shows you every role, and offers to change any of them. It writes `zstack-models.md` at the root of the repository being configured, a small rule every zstack skill reads.
+[`/setup-zstack`](../../skills/setup-zstack/SKILL.md) detects the models you could override with, shows you every role, and offers to change any of them. It writes `~/.pi/agent/zstack.json`, a machine-wide config every zstack worker reads.
 
-Every role defaults to `inherit-parent`: feature, refactoring, bug fix, perf, hillclimb, judgment and prose, swarm workers, arena runners, the arena cross-judge pool, and interrogate reviewers. A panel is one `inherit-parent` entry, not a list of frontier models. zstack omits the subagent `model` field, so workers inherit the parent session model. With Pi as the parent, Pi's default is the source of truth. `auto` means the same thing as `inherit-parent`.
+Every role defaults to `inherit-parent`: feature, refactoring, bug fix, perf, hillclimb, judgment and prose, swarm workers, arena runners, the arena cross-judge pool, and interrogate reviewers. A panel is one `inherit-parent` entry, not a list of frontier models. zstack omits the child `model` field, so workers inherit the parent session model. With Pi as the parent, Pi's current model is the source of truth. `auto` means the same thing as `inherit-parent`.
 
-You only override what you care about. A role with no line in the rule keeps the `inherit-parent` default. Delete a role's line to restore it. A rerun of `/setup-zstack` keeps your explicit overrides and never restores an earlier vendor's defaults.
+You only override what you care about. A role with no entry in the config keeps the `inherit-parent` default. Clear a role in the setup dialog to restore it. A rerun of `/setup-zstack` keeps your explicit overrides and never restores an earlier vendor's defaults.
 
 ## Accept the verification offers, or don't
 
@@ -34,7 +38,7 @@ If you're new to zstack, say yes. An agent that can check its own work keeps goi
 
 Then setup offers once to generate a formal verification skill with [`/create-formal-verification-skill`](../../skills/create-formal-verification-skill/SKILL.md), unless the project already has one. Tests check the cases someone thought to write. A formal verification skill checks one key property of your code, such as "a job never runs twice at once", in every case within a stated scope. Say yes when your code has concurrency, retries, a state machine, or a parser, where a bug is costly and tests rarely reach the case that breaks. Otherwise say no, and run it later if that changes. [Verify and ship](./06-verify-and-ship.md#prove-a-property-with-a-formal-verification-skill) covers it.
 
-After setup, start a new task. Skills read the model rule when they run.
+After setup, start a new task. Workers read the machine-wide model config when they run.
 
 ## Keep the cost in check
 

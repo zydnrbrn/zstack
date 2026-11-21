@@ -16,15 +16,34 @@ fork it. improve it. make it yours. PRs are welcome!
 
 ## install
 
-this directory is the source. Pi runs implementation on Pi's default model. the T3 session reviews the work: Grok, Codex, Claude Code, OpenCode, or another T3 provider.
+this directory is the source. zstack is installed machine-wide, once, for every repository. Pi is the primary harness. Codex, Grok, and Claude Code read the same skills from user-scope skill directories.
 
-for Pi, see the [Pi adapter](./docs/harness/pi.md). for Claude Code inside a T3 session, see the [claude code adapter](./docs/harness/claude-code.md). `/setup-zstack` writes `zstack-models.md` at the root of the repository being configured for explicit model overrides; every role defaults to `inherit-parent`. Pi needs no rule file to use its session default.
+```bash
+pi install /absolute/path/to/zstack
+```
+
+The Pi package contains a full extension and all skills. The extension adds `zstack_task`, `/zstack`, `/zstack-help`, `/setup-zstack`, and `/zstack-status`. It runs every worker as an isolated Pi process on the parent session model. See the [Pi adapter](./docs/harness/pi.md).
+
+For the other three harnesses, link this checkout's `skills/` into their user skill paths:
+
+```bash
+mkdir -p ~/.agents/skills ~/.claude/skills
+for skill in skills/*/; do
+  name=$(basename "$skill")
+  ln -sfn "$PWD/$skill" ~/.agents/skills/"$name"
+  ln -sfn "$PWD/$skill" ~/.claude/skills/"$name"
+done
+```
+
+Codex and Grok read `~/.agents/skills/`. Claude Code reads `~/.claude/skills/`. No per-project config is needed. See [Codex](./docs/harness/codex.md), [Grok](./docs/harness/grok.md), and [Claude Code](./docs/harness/claude-code.md).
+
+`/setup-zstack` writes `~/.pi/agent/zstack.json` for optional model overrides. Every role defaults to `inherit-parent`.
 
 ## get started
 
 two steps:
 
-1. run [`/setup-zstack`](./skills/setup-zstack/SKILL.md), confirm the inherit-parent defaults, and override only if you want a different model.
+1. run [`/setup-zstack`](./skills/setup-zstack/SKILL.md), confirm the machine-wide inherit-parent defaults, and override only if you want a different model.
 2. use [`/zstack`](./skills/zstack/SKILL.md) whenever you're doing anything that requires rigor.
 
 new here? the [zstack guide](./docs/guide/README.md) walks you through a first real task, from setup and prompting through verification and overnight runs. stuck, or unsure which skill fits? ask [`/zstack-help`](./skills/zstack-help/SKILL.md).
@@ -254,13 +273,9 @@ personally, i don't believe in planning. the best spec is code. if you do want t
 
 type [`/automate-me`](./skills/automate-me/SKILL.md). it mines your recent transcripts, drafts a `<your-name>-mode` skill from how you've actually worked, and routes through zstack underneath. you keep zstack as the base and end up with your own routing skill alongside `zstack`.
 
-models are configurable too. type [`/setup-zstack`](./skills/setup-zstack/SKILL.md). it detects the models you have access to and writes `zstack-models.md` at the root of the repository being configured. every role starts on `inherit-parent`, so you override only what you want.
+models are configurable too. type [`/setup-zstack`](./skills/setup-zstack/SKILL.md). it detects the models available in your Pi session and writes `~/.pi/agent/zstack.json`. every role starts on `inherit-parent`, so you override only what you want.
 
-a re-run keeps your explicit overrides and leaves every other role on `inherit-parent`. it never restores an earlier vendor's defaults. delete a role's line to fall back to `inherit-parent`.
-
-## automations
-
-zstack also ships a dormant [benny automation pack](./automations/benny/). It is unsupported because Cursor is not a supported harness.
+a re-run keeps your explicit overrides and leaves every other role on `inherit-parent`. it never restores an earlier vendor's defaults. clear a role in the setup dialog to fall back to `inherit-parent`.
 
 ## license
 

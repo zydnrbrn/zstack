@@ -32,7 +32,7 @@ Walk through what each line buys you:
 - "done means..." turns the goal into checks every iteration can run.
 - "fresh worktree off `<base>`" keeps the run from colliding with anything else you have open.
 - "don't ask me before committing" pre-answers the permission the agent would otherwise block on.
-- not supported. Cursor is not a supported harness.
+- Pi runs long work through `zstack_task` workers. An event worth watching gets a watcher worker with a long heartbeat fallback; no event gets a fixed short poll.
 - The escape hatch lets it stop at a genuine dead end and write up why, which beats eight hours of creative goal reinterpretation.
 
 Because you'll review this work after stepping away, `/zstack` routes it through [`/figure-it-out`](../../skills/figure-it-out/SKILL.md), which designs the run's phases before any code and wires in the decision log.
@@ -93,9 +93,7 @@ A whole program, such as a migration across many packages, has no playbook of it
 
 ## Run many projects in parallel
 
-not supported. Cursor is not a supported harness.
-
-Give each independent body of work its own worktree and its own T3 thread. A coordinator can direct subagents that follow the playbooks. Each worker reads [`worker.md`](../../skills/zstack/worker.md) first, so it holds to the kickoff's bar, decides reversible calls instead of asking you, and opens PRs ready for review.
+Pi runs each body of work in its own `zstack_task` process. Give each one its own worktree and its own T3 thread. A coordinator can direct subagents that follow the playbooks. Each worker reads [`worker.md`](../../skills/zstack/worker.md) first, so it holds to the kickoff's bar, decides reversible calls instead of asking you, and opens PRs ready for review.
 
 A few habits help:
 
@@ -114,14 +112,10 @@ One prompt can carry a whole program, from research through execution:
 
 Every loop above still waits for you to start it. A scheduled or event-driven automation would remove that step. Software maintenance splits into stages that suit this well: triage a report, reproduce it, fix it, verify the fix.
 
-not supported. Cursor is not a supported harness.
-
-Two rules keep such a line trustworthy:
+Pi has no built-in scheduler. Run these stages from an external scheduler that invokes `pi -p`, Codex, or Grok. Two rules keep such a line trustworthy:
 
 - Every stage can stop the line. Triage can decide the report is expected behavior, repro can fail to reproduce it, and the fixer can judge the change too risky. Each of those outcomes is useful, because it keeps bad work from reaching the next stage, where it costs more to undo.
 - Every stage hands over evidence. Repro attaches screenshots and video of the broken state, and the fix attaches before-and-after proof. A human can then check that the agent fixed the right thing before reading a line of code.
-
-zstack ships this as a dormant [automation pack](../../automations/benny/README.md) for Slack issue reports. It is unsupported because Cursor is not a supported harness.
 
 **Pitfall:** a duration is not a finish condition. "work on this for 4 hours" gives the agent nothing to check, and you'll wake up to four hours of motion instead of a result. Give the agent a predicate that can pass or fail.
 

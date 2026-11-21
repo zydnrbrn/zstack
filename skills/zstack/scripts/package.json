@@ -1,5 +1,5 @@
 {
-  "name": "@cursor-skill/zstack-tools",
+  "name": "@zstack/zstack-tools",
   "private": true,
   "type": "module",
   "scripts": {

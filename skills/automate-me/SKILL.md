@@ -10,7 +10,7 @@ A guided flow for turning the user's working conventions into a skill agents wil
 
 This skill has two parts: an inline mining pass (see step 1) and the **unslop** skill (prose discipline). It sequences them. It doesn't replace them.
 
-not supported. Cursor is not a supported harness.
+Use the active session's transcript path. In Pi it is named by `PI_SESSION_FILE`; Codex, Grok, and Claude Code expose their own session paths.
 
 ## Flow
 
@@ -28,7 +28,7 @@ Update mode changes the rest of the flow:
 
 ### 1. Mine their history
 
-Locate the active workspace's transcripts before fanning out. The system prompt names the workspace's `agent-transcripts/` directory. Use only that path. Globbing across unrelated transcript roots crosses workspace boundaries and reads private chats from unrelated projects.
+Locate the active session's transcript before fanning out. Use the harness-provided path, never a guessed vendor directory. Globbing across unrelated transcript roots crosses workspace boundaries and reads private chats from unrelated projects.
 
 Survey recent agent conversations within that scope for recurring patterns. Run multiple parallel subagents across slices of history (e.g. last 2-4 weeks, split into 3 slices so each has enough material). Pick each subagent's reasoning level for the job, per the Subagents section of the **zstack** skill. Each slice mining subagent reads transcripts from the workspace-scoped path the parent provides, looks for the signals below, and returns a short structured list of patterns it saw with evidence pointers. Default signals worth hunting:
 

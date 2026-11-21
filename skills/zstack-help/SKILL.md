@@ -24,7 +24,7 @@ Infer the need from the message and the conversation. A named situation, such as
 
 Check the state that changes the answer, and mention it only when it does:
 
-- No `zstack-models.md` at the repository root means `/setup-zstack` hasn't recorded overrides, so every role inherits the parent session's model.
+- No `~/.pi/agent/zstack.json` means `/setup-zstack` hasn't recorded overrides, so every role inherits the parent session's model.
 - No `verify-*` skill or other app harness in the project means agents have no scripted way to drive the app. Mention `/create-verification-skill` when the question is about proving a change works.
 - No formal verification skill in the project means no property is checked past what tests reach. Mention `/create-formal-verification-skill` when the question is about a race, an invariant, or another case tests rarely hit. When one exists and the code it covers changed after the commit it records as last in sync, mention `/maintain-formal-verification-skill` if the question touches that code.
 
@@ -36,7 +36,7 @@ When the model rule is missing and it matters, ask whether the user wants to set
 ## Get set up
 
 1. This directory is the source. Pi implements. The T3 session reviews.
-2. Run [`/setup-zstack`](../setup-zstack/SKILL.md). It confirms the `inherit-parent` defaults, records any overrides, and writes `zstack-models.md` at the repository root. Skills read it when they run. Then it offers once each to generate a verification skill and a formal verification skill for the project, unless the project already has one.
+2. Run [`/setup-zstack`](../setup-zstack/SKILL.md). It confirms the machine-wide `inherit-parent` defaults, records any overrides, and writes `~/.pi/agent/zstack.json`. Workers read it when they run. Then it offers once each to generate a verification skill and a formal verification skill for the project, unless the project already has one.
 3. Start a real task with `/zstack`, a goal, and a check that can pass or fail.
 
 Installing changes nothing until the user invokes a skill. Only `/setup-zstack` loads from the user's words. The [README](../../README.md) and [guide page 1](../../docs/guide/01-setup.md) have the details. Offer to word their first prompt with them, per [`references/prompting.md`](references/prompting.md).
@@ -51,7 +51,7 @@ Other tools can read the skills, because they use the Agent Skills format. Workf
 
 `/zstack` matches the task to a playbook, copies the playbook's steps into the todo list, and runs the other skills as the steps need them. A good prompt states the goal and how to tell it's done. It doesn't list skills, because a hand-written sequence tends to drop or reorder steps the playbook would keep. Read [`references/prompting.md`](references/prompting.md) before you help word one. [Guide page 2](../../docs/guide/02-zstack.md) has examples.
 
-Start each task with `/zstack`. It stays in scope for that task. Mid-chat, "new task" makes it match a fresh playbook. `/zstack` already uses `zstack-agent` for the subagents its playbook steps spawn. To get the same style from a subagent of your own, spawn it with `subagent_type: "zstack-agent"`.
+Start each task with `/zstack`. It stays in scope for that task. Mid-chat, "new task" makes it match a fresh playbook. `/zstack` already uses `zstack-agent` for the workers its playbook steps spawn. To get the same style from a worker of your own, call `zstack_task` with `subagent_type: "zstack-agent"`.
 
 ## Pick a skill
 
@@ -106,7 +106,6 @@ Close calls:
 
 Not in zstack:
 
-- not supported. Cursor is not a supported harness.
 - zstack has no `/orchestrate` skill. If the slash menu shows `/orchestrate`, another plugin provides it.
 
 ## Playbooks and principles
@@ -132,7 +131,7 @@ Principles are one-rule skills that `/zstack` reads and cites in its replies. Th
 |---|---|
 | `/zstack` stopped applying after a few turns | Start the next task with `/zstack`. |
 | A question got treated as the next step of the last task | Say "new task", or say the turn doesn't need `/zstack`. |
-| A new model choice had no effect | `/setup-zstack` writes `zstack-models.md` at the repository root. Skills read it when they run. |
+| A new model choice had no effect | `/setup-zstack` writes `~/.pi/agent/zstack.json`. Workers read it when they run. |
 | Runs cost more than expected | See the cost paragraph under Get set up. |
 | A skill didn't load on its own | Only `/setup-zstack` loads from the user's words. The others load when the user types them or when `/zstack` runs them, and it doesn't run every skill. |
 | Parallel agents overwrote each other | Give each agent its own worktree. |

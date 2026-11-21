@@ -58,7 +58,7 @@ In context, that's enough. [`/tdd`](../../skills/tdd/SKILL.md) writes the smalle
 
 The [Opening a PR playbook](../../skills/zstack/playbooks/opening-a-pr.md) strips narrating comments, unsupported guards, dead compatibility paths, and unrelated edits before each commit. zstack applies [`/unslop`](../../skills/unslop/SKILL.md) to the PR description and commit bodies.
 
-not supported. Cursor is not a supported harness.
+In Pi, `/zstack` runs the cleanup through the bundled skills before opening the PR.
 
 For prose, `/unslop` takes a target and any extra rules you have:
 
